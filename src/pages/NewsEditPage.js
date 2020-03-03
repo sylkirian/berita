@@ -1,16 +1,29 @@
 import React, {useEffect, useState} from 'react';
 import {Link, useHistory, useParams} from 'react-router-dom';
+import styled from 'styled-components';
 
 import Alert from '../components/Alert';
+import Button from '../components/Button';
 import Container from '../components/Container';
-import FormItem from '../components/FormItem';
+import FormGroup from '../components/FormGroup';
+import Image from '../components/Image';
 import {apiGetData, apiSaveData, apiDeleteData} from '../helpers/api';
+
+const ImageBox = styled.div`
+	max-height: 503px;
+	overflow-y: hidden;
+	& > img {
+		width: 100%;
+	}
+`
 
 export default function NewsEditPage() {
 	const [alert, setAlert] = useState();
 	const [input, setInput] = useState({
 		title: '',
-		content: ''
+		content: '',
+		photo: null,
+		file: null
 	});
 
 	const {id} = useParams();
@@ -22,7 +35,8 @@ export default function NewsEditPage() {
 				console.log(resp);
 				setInput({
 					title: resp.title,
-					content: resp.content
+					content: resp.content,
+					photo: resp.photo
 				});
 			}, (error) => {
 				console.error(error);
@@ -41,7 +55,13 @@ export default function NewsEditPage() {
 	function handleSubmit(e) {
 		e.preventDefault();
 
-		apiSaveData(id, (resp) => {
+		const formData = new FormData();
+
+		Object.keys(input).forEach(function(key) {
+			formData.append(key,input[key]);
+		});
+
+		apiSaveData(id, formData, (resp) => {
 			console.log(resp);
 			setAlert({
 				error: false,
@@ -79,16 +99,23 @@ export default function NewsEditPage() {
 				<Alert error={alert.error}>{alert.message}</Alert>
 			)}
 			<form onSubmit={handleSubmit}>
-				<FormItem>
+				<FormGroup>
 					<label>Judul Berita</label>
-					<div><input type="text" name="title" value={input.title} placeholder="Judul Berita" onChange={handleChange} /></div>
-				</FormItem>
-				<FormItem>
+					<input type="text" name="title" value={input.title} placeholder="Judul Berita" onChange={handleChange} />
+				</FormGroup>
+				<FormGroup>
 					<label>Isi Berita</label>
-					<div><textarea name="content" value={input.content} placeholder="Isi Berita" onChange={handleChange} /></div>
-				</FormItem>
-				<button type="submit">Simpan</button>
-				<button type="button" onClick={handleDelete}>Delete</button>
+					<textarea name="content" rows="25" value={input.content} placeholder="Isi Berita" onChange={handleChange} />
+				</FormGroup>
+				<FormGroup>
+					<label>Gambar</label>
+					<Image optional src={input.photo} onChange={e => {
+						setInput({file: e.target.files[0], ...input}); // ambil satu saja
+					}} />
+					<input type="file" />
+				</FormGroup>
+				<Button type="submit">Simpan</Button>
+				<Button type="button" onClick={handleDelete}>Delete</Button>
 			</form>
 			<br /><br />
 			<Link to="/">Kembali ke halaman utama</Link>

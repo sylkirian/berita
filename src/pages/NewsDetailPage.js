@@ -7,6 +7,15 @@ import Image from '../components/Image';
 import Timestamp from '../components/Timestamp';
 import {apiGetData} from '../helpers/api';
 
+const ImageBox = styled.div`
+	max-height: 503px;
+	overflow-y: hidden;
+	& > img {
+		margin-top: 15px;
+		width: 100%;
+	}
+`
+
 const Content = styled.p`
 	text-align: justify;
 `
@@ -32,7 +41,9 @@ export default function NewsDetailPage() {
 			<Container>
 				<h2>{data.title}</h2>
 				<Timestamp data={data} />
-				<Image src={data.photo} />
+				<ImageBox>
+					<Image optional src={data.photo} />
+				</ImageBox>
 				<Content>
 					{data.content}
 				</Content>

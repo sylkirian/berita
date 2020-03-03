@@ -2,8 +2,9 @@ import React, {useState} from 'react';
 import {Link, useHistory} from 'react-router-dom';
 
 import Alert from '../components/Alert';
+import Button from '../components/Button';
 import Container from '../components/Container';
-import FormItem from '../components/FormItem';
+import FormGroup from '../components/FormGroup';
 import {apiLogin} from '../helpers/api';
 
 export default function Login({setLogin}) {
@@ -58,15 +59,15 @@ export default function Login({setLogin}) {
 				<Alert error>{alert.message}</Alert>
 			)}
 			<form onSubmit={handleSubmit}>
-				<FormItem>
+				<FormGroup>
 					<label>Username</label>
-					<div><input type="text" name="username" value={input.username} placeholder="Username" onChange={handleChange} /></div>
-				</FormItem>
-				<FormItem>
+					<input type="text" name="username" value={input.username} placeholder="Username" onChange={handleChange} />
+				</FormGroup>
+				<FormGroup>
 					<label>Password</label>
-					<div><input type="password" name="password" value={input.password} placeholder="Password" onChange={handleChange} /></div>
-				</FormItem>
-				<button type="submit">Login</button>
+					<input type="password" name="password" value={input.password} placeholder="Password" onChange={handleChange} />
+				</FormGroup>
+				<Button type="submit">Login</Button>
 			</form>
 			<br /><br />
 			<Link to="/">Kembali ke halaman utama</Link>

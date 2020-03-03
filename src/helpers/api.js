@@ -46,9 +46,13 @@ export async function apiGetData(id, callback, callbackError) {
 	}
 }
 
-export async function apiSaveData(id, callback, callbackError) {
+export async function apiSaveData(id, formdata, callback, callbackError) {
 	try {
-		let response = await api.post('news' + (id ? '/' + id : ''));
+		let response = await api.post('news' + (id ? '/' + id : ''), formdata, {
+			headers: {
+				'Content-Type': 'multipart/form-data'
+			}
+		});
 
 		response = response.data;
 

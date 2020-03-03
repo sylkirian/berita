@@ -3,6 +3,7 @@ import {Link, useHistory} from 'react-router-dom';
 import styled from 'styled-components';
 
 import Alert from '../components/Alert';
+import Button from '../components/Button';
 import Clearfix, {Left, Right} from '../components/Clearfix';
 import Container from '../components/Container';
 import Image from '../components/Image';
@@ -15,10 +16,13 @@ const NewsRow = styled(Clearfix)`
 
 const ImageBox = styled.div`
 	float: left;
+	width: 33%;
+`
+
+const NewsImage = styled(Image)`
 	height: 200px;
 	overflow-y: hidden;
-	width: 33%;
-	& img {
+	& > img {
 		width: 100%;
 	}
 `
@@ -30,10 +34,8 @@ const NewsBox = styled.div`
 	width: 63%;
 `
 
-const Title = styled.p`
-	font-size: 26px;
-	font-weight: bold;
-	margin: 0 0 15px 0;
+const Title = styled.h2`
+	margin-top: 0;
 `
 
 const TitleLink = styled(Link)`
@@ -88,7 +90,7 @@ export default function NewsListPage({login}) {
 			<NewsRow>
 				<ImageBox>
 					<Link to={'/detail/' + data.id}>
-						<Image src={data.photo} />
+						<NewsImage src={data.photo} />
 					</Link>
 				</ImageBox>
 				<NewsBox>
@@ -105,8 +107,8 @@ export default function NewsListPage({login}) {
 						{login && (
 						<Right>
 							<Link to={'/edit/' + data.id}>Edit</Link>
-							{'\u00A0'}
-							<button onClick={() => handleDelete(data.id)}>Delete</button>
+							{'\u00A0\u00A0'}
+							<Button onClick={() => handleDelete(data.id)}>Delete</Button>
 						</Right>
 						)}
 					</Clearfix>
