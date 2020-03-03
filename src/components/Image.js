@@ -1,27 +1,35 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
+import styled from 'styled-components';
 
 import placeholder from '../assets/img/placeholder.png';
 
+const ImageBox = styled.div`
+	overflow: hidden;
+`
+
 export default function Image({src, optional, className}) {
-	const [hidden, setHidden] = useState(src ? false : true);
-	const [source, setSource] = useState(src ? src : (optional ? null : placeholder));
+	const [source, setSource] = useState();
 	const [error, setError] = useState(false);
 
-	let style;
-	if(hidden)
-		style = {display: 'none'};
+	useEffect(() => {
+		setSource(src);
+	}, [src]);
 
 	// harus ada alt agar tidak warning
-	return (
-		<div className={className} style={style}>
-			<img alt="" src={source} onError={(e) => {
-			if(!error && !optional) {
-				setError(true);
-				setSource(placeholder);
-			}
-			else
-				setHidden(true);
-		}} />
-		</div>
-	);
+	if(source) {
+		return (
+			<ImageBox className={className}>
+				<img alt="" src={source} onError={(e) => {
+				if(!error && !optional) {
+					setError(true);
+					setSource(placeholder);
+				}
+				else
+					setSource(null);
+			}} />
+			</ImageBox>
+		);
+	}
+	else
+		return null;
 }

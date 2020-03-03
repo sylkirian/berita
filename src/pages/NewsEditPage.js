@@ -9,9 +9,8 @@ import FormGroup from '../components/FormGroup';
 import Image from '../components/Image';
 import {apiGetData, apiSaveData, apiDeleteData} from '../helpers/api';
 
-const ImageBox = styled.div`
+const ImageBox = styled(Image)`
 	max-height: 503px;
-	overflow-y: hidden;
 	& > img {
 		width: 100%;
 	}
@@ -109,10 +108,10 @@ export default function NewsEditPage() {
 				</FormGroup>
 				<FormGroup>
 					<label>Gambar</label>
-					<Image optional src={input.photo} onChange={e => {
+					<ImageBox optional src={input.photo} />
+					<input type="file" onChange={e => {
 						setInput({file: e.target.files[0], ...input}); // ambil satu saja
 					}} />
-					<input type="file" />
 				</FormGroup>
 				<Button type="submit">Simpan</Button>
 				<Button type="button" onClick={handleDelete}>Delete</Button>
