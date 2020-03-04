@@ -32,7 +32,7 @@ export default function Login({setLogin}) {
 			setLogin(login);
 
 			// simpan juga ke local storage
-			localStorage.setItem('login', login);
+			localStorage.setItem('login', JSON.stringify(login));
 
 			// redirect
 			history.replace('/');

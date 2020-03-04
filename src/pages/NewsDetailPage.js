@@ -44,9 +44,9 @@ export default function NewsDetailPage() {
 				<Content>
 					{data.content}
 				</Content>
-				<Link to="/">
-					Kembali ke halaman utama
-				</Link>
+				<Link to={"/edit/" + id}>Edit</Link>
+				{'\u00A0\u00A0'}
+				<Link to="/">Kembali ke halaman utama</Link>
 			</Container>
 		);
 	}

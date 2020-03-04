@@ -2,13 +2,11 @@ import React, {useEffect, useState} from 'react';
 import {Link, useHistory} from 'react-router-dom';
 import styled from 'styled-components';
 
-import Alert from '../components/Alert';
-import Button from '../components/Button';
 import Clearfix, {Left, Right} from '../components/Clearfix';
 import Container from '../components/Container';
 import Image from '../components/Image';
 import Timestamp from '../components/Timestamp';
-import {apiGetData, apiDeleteData} from '../helpers/api';
+import {apiGetData} from '../helpers/api';
 
 const NewsRow = styled(Clearfix)`
 	margin-bottom: 30px;
@@ -20,7 +18,7 @@ const ImageBox = styled.div`
 `
 
 const NewsImage = styled(Image)`
-	height: 200px;
+	height: 175px;
 	overflow-y: hidden;
 	& > img {
 		width: 100%;
@@ -29,7 +27,7 @@ const NewsImage = styled(Image)`
 
 const NewsBox = styled.div`
 	float: right;
-	min-height: 200px;
+	min-height: 175px;
 	position: relative;
 	width: 63%;
 `
@@ -54,7 +52,6 @@ const Content = styled.p`
 `
 
 export default function NewsListPage({login}) {
-	const [alert, setAlert] = useState();
 	const [data, setData] = useState();
 
 	const history = useHistory();
@@ -68,22 +65,6 @@ export default function NewsListPage({login}) {
 			history.replace('/notfound');
 		});
 	}, [history]);
-
-	function handleDelete(id) {
-		apiDeleteData(id, (resp) => {
-			console.log(resp);
-			setAlert({
-				error: false,
-				message: 'Hapus berita berhasil'
-			});
-		}, (error) => {
-			console.error(error);
-			setAlert({
-				error: true,
-				message: 'Hapus berita gagal'
-			});
-		});
-	}
 
 	function NewsList({login, data}) {
 		return (
@@ -107,8 +88,6 @@ export default function NewsListPage({login}) {
 						{login && (
 						<Right>
 							<Link to={'/edit/' + data.id}>Edit</Link>
-							{'\u00A0\u00A0'}
-							<Button onClick={() => handleDelete(data.id)}>Delete</Button>
 						</Right>
 						)}
 					</Clearfix>
@@ -120,9 +99,6 @@ export default function NewsListPage({login}) {
 	if(data) {
 		return (
 			<Container>
-				{alert && (
-				<Alert error={alert.error}>{alert.message}</Alert>
-				)}
 				{data.map((value, index) => (
 				<NewsList key={index} login={login} data={value} />
 				))}

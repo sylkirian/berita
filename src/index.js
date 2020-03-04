@@ -41,13 +41,17 @@ const Menu = styled.div`
 `
 
 function App() {
+	let token = localStorage.getItem('login');
+	if(token)
+		token = JSON.parse(token).token;
+
+	const [login, setLogin] = useState(localStorage.getItem('login'));
+
 	useEffect(() => {
 		document.body.title = 'Portal Berita';
 		document.body.style.fontFamily = 'Roboto, Helvetica, Arial, sans-serif';
 		document.body.style.margin = 0;
 	}, []);
-
-	const [login, setLogin] = useState(localStorage.getItem('login'));
 
 	return (
 		<Router>

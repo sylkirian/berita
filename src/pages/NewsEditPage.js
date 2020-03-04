@@ -18,12 +18,13 @@ const ImageBox = styled(Image)`
 
 export default function NewsEditPage() {
 	const [alert, setAlert] = useState();
+	const [foto, setFoto] = useState();
 	const [input, setInput] = useState({
 		title: '',
 		content: '',
-		photo: null,
-		file: null
+		// photo: null
 	});
+	const [file, setFile] = useState();
 
 	const {id} = useParams();
 	const history = useHistory();
@@ -34,9 +35,9 @@ export default function NewsEditPage() {
 				console.log(resp);
 				setInput({
 					title: resp.title,
-					content: resp.content,
-					photo: resp.photo
+					content: resp.content
 				});
+				setFoto(resp.photo);
 			}, (error) => {
 				console.error(error);
 				history.replace('/notfound');
@@ -60,12 +61,14 @@ export default function NewsEditPage() {
 			formData.append(key,input[key]);
 		});
 
+		if(file)
+			formData.append('photo',file);
+
 		apiSaveData(id, formData, (resp) => {
 			console.log(resp);
-			setAlert({
-				error: false,
-				message: 'Penyimpanan data berhasil'
-			});
+			
+			// redirect
+			history.replace('/detail/' + resp.id);
 		}, (error) => {
 			console.error(error);
 			setAlert({
@@ -78,10 +81,9 @@ export default function NewsEditPage() {
 	function handleDelete() {
 		apiDeleteData(id, (resp) => {
 			console.log(resp);
-			setAlert({
-				error: false,
-				message: 'Hapus berita berhasil'
-			});
+
+			// redirect
+			history.replace('/');
 		}, (error) => {
 			console.error(error);
 			setAlert({
@@ -93,7 +95,7 @@ export default function NewsEditPage() {
 
 	return (
 		<Container>
-			<h1>Edit Berita</h1>
+			<h1>{id ? 'Edit' : 'Buat'} Berita</h1>
 			{alert && (
 				<Alert error={alert.error}>{alert.message}</Alert>
 			)}
@@ -108,9 +110,10 @@ export default function NewsEditPage() {
 				</FormGroup>
 				<FormGroup>
 					<label>Gambar</label>
-					<ImageBox optional src={input.photo} />
+					<ImageBox optional src={foto} />
 					<input type="file" onChange={e => {
-						setInput({file: e.target.files[0], ...input}); // ambil satu saja
+						// setInput({...input, file: e.target.files[0]}); // tidak bisa
+						setFile(e.target.files[0]);
 					}} />
 				</FormGroup>
 				<Button type="submit">Simpan</Button>
