@@ -5,10 +5,6 @@ const api = axios.create({
 	baseURL: 'http://192.168.1.33:8000/api/'
 });
 
-let token = localStorage.getItem('login');
-if(token)
-	token = JSON.parse(token).token;
-
 export async function apiLogin(input, callback, callbackError) {
 	try {
 		let response = await api.post('login', input);
@@ -53,6 +49,8 @@ export async function apiGetData(id, callback, callbackError) {
 
 export async function apiSaveData(id, formdata, callback, callbackError) {
 	try {
+		const token = getToken();
+
 		if(!token)
 			throw new Error('Anda belum login');
 
@@ -82,10 +80,13 @@ export async function apiSaveData(id, formdata, callback, callbackError) {
 
 export async function apiDeleteData(id, callback, callbackError) {
 	try {
+		if(!id)
+			throw new Error('Pilih data yang akan dihapus');
+
+		const token = getToken();
+
 		if(!token)
 			throw new Error('Anda belum login');
-		else if(!id)
-			throw new Error('Pilih data yang akan dihapus');
 
 		let response = await api.delete('news/' + id, {
 			headers: {
@@ -108,6 +109,15 @@ export async function apiDeleteData(id, callback, callbackError) {
 		if(callbackError)
 			callbackError(error);
 	}
+}
+
+function getToken() {
+	const logindata = localStorage.getItem('login');
+
+	if(logindata)
+		return JSON.parse(logindata).token;
+	else
+		return null;
 }
 
 export default api;
