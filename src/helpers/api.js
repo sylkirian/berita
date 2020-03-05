@@ -2,8 +2,7 @@ const axios = require('axios');
 
 const api = axios.create({
 	// baseURL: 'http://learn.hackatown.online/api/'
-	// baseURL: 'http://localhost/demo/api/'
-	baseURL: 'http://127.0.0.1:8000/api/'
+	baseURL: 'http://192.168.1.33:8000/api/'
 });
 
 let token = localStorage.getItem('login');

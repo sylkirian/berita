@@ -62,7 +62,6 @@ export default function NewsListPage({login}) {
 			setData(resp);
 		}, (error) => {
 			console.error(error);
-			history.replace('/notfound');
 		});
 	}, [history]);
 

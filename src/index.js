@@ -41,11 +41,11 @@ const Menu = styled.div`
 `
 
 function App() {
-	let token = localStorage.getItem('login');
-	if(token)
-		token = JSON.parse(token).token;
+	let logindata = localStorage.getItem('login');
+	if(logindata)
+		logindata = JSON.parse(logindata);
 
-	const [login, setLogin] = useState(localStorage.getItem('login'));
+	const [login, setLogin] = useState(logindata);
 
 	useEffect(() => {
 		document.body.title = 'Portal Berita';
